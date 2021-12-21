@@ -26,20 +26,20 @@ def test_pred_virginica():
         assert response.json() == {"flower_class": "Iris Virginica"}
 
 
-# test to check if Iris Versicolour is classified correctly
-def test_pred_versicolour():
+# test to check if Iris Virginica is classified correctly
+def test_pred_virginica_diff():
     # defining a sample payload for the testcase
     payload = {
         "sepal_length": 3.1,
-        "sepal_width": 1,
-        "petal_length": 1,
-        "petal_width": 1,
+        "sepal_width": 5.7,
+        "petal_length": 6,
+        "petal_width": 6,
     }
     with TestClient(app) as client:
         response = client.post("/predict_flower", json=payload)
         # asserting the correct response is received
         assert response.status_code == 200
-        assert response.json() == {"flower_class": "Iris Versicolour"}
+        assert response.json() == {"flower_class": "Iris Virginica"}
 
 
 # test to check if invalid param in payload is passed
