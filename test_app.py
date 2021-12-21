@@ -87,16 +87,48 @@ def test_pred_setosa():
         assert response.json()["flower_class"] ==  "Iris Setosa"
 
 # test to check if Iris Virginica is classified correctly with different payload
-# def test_pred_virginica_diff_payload():
-#     # defining a sample payload for the testcase
-#     payload = {
-#         "sepal_length": 5.2,
-#         "sepal_width": 5.4,
-#         "petal_length": 10.4,
-#         "petal_width": 6.2,
-#     }
-#     with TestClient(app) as client:
-#         response = client.post("/predict_flower", json=payload)
-#         # asserting the correct response is received
-#         assert response.status_code == 200
-#         assert response.json()["flower_class"] == "Iris Virginica"
+def test_pred_virginica_diff_payload():
+    # defining a sample payload for the testcase
+    payload = {
+        "sepal_length": 5.2,
+        "sepal_width": 5.4,
+        "petal_length": 10.4,
+        "petal_width": 6.2,
+    }
+    with TestClient(app) as client:
+        response = client.post("/predict_flower", json=payload)
+        # asserting the correct response is received
+        assert response.status_code == 200
+        assert response.json()["flower_class"] == "Iris Virginica"
+
+#test to check feedback_loop method for Iris Virginica
+def test_feedback_loop_virginica():
+# defining a sample payload for the testcase
+    payload = [{
+        "sepal_length": 3,
+        "sepal_width": 5,
+        "petal_length": 3.2,
+        "petal_width": 4.4,
+        "flower_class":"Iris Virginica"
+    }]
+    with TestClient(app) as client:
+        response = client.post("/feedback_loop", json=payload)
+        # asserting the correct response is received
+        assert response.status_code == 200
+        assert response.json() == {"detail": "Feedback loop successful"}
+
+#test to check feedback_loop method
+def test_feedback_loop():
+# defining a sample payload for the testcase
+    payload = [{
+        "sepal_length": 3.8,
+        "sepal_width": 8,
+        "petal_length": 5.2,
+        "petal_width": 4.4,
+        "flower_class":"Iris Setosa"
+    }]
+    with TestClient(app) as client:
+        response = client.post("/feedback_loop", json=payload)
+        # asserting the correct response is received
+        assert response.status_code == 200
+        assert response.json() == {"detail": "Feedback loop successful"}
